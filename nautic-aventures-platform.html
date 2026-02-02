@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nautic Aventures Bonifacio - Location de Bateaux entre Particuliers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1a4b7c;
+            --accent-gold: #c9a227;
+            --ocean-light: #e8f4f8;
+            --ocean-medium: #7db9d8;
+            --sand: #f5f0e8;
+            --text-dark: #1a1a2e;
+            --white: #ffffff;
+            --shadow-soft: 0 4px 20px rgba(26, 75, 124, 0.1);
+            --shadow-medium: 0 8px 40px rgba(26, 75, 124, 0.15);
+            --shadow-strong: 0 12px 60px rgba(26, 75, 124, 0.2);
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--sand);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Ocean Background */
+        .ocean-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, var(--ocean-light) 0%, var(--sand) 100%);
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%237db9d840' d='M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,154.7C960,149,1056,171,1152,165.3C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+            bottom: 0;
+            animation: wave 25s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            bottom: 10px;
+            opacity: 0.5;
+            animation: wave 20s linear infinite reverse;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--ocean-medium));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 0.7rem;
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 400;
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), #2a5a8c);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(26, 75, 124, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 75, 124, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--accent-gold), #d4af37);
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            line-height: 1.2;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            color: var(--accent-gold);
+            display: block;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        /* Search Box */
+        .search-box {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-strong);
+            margin-bottom: 2rem;
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .search-field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .search-field input,
+        .search-field select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-field input:focus,
+        .search-field select:focus {
+            outline: none;
+            border-color: var(--ocean-medium);
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            height: 56px;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+        }
+
+        .boat-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            transform: perspective(1000px) rotateY(-5deg);
+        }
+
+        .boat-card-mini {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: floatUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .boat-card-mini:nth-child(1) { animation-delay: 0.2s; }
+        .boat-card-mini:nth-child(2) { animation-delay: 0.4s; }
+        .boat-card-mini:nth-child(3) { animation-delay: 0.6s; }
+        .boat-card-mini:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes floatUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .boat-card-mini:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .boat-card-mini img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .boat-card-mini-content {
+            padding: 1rem;
+        }
+
+        .boat-card-mini h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .boat-card-mini .price {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .mini-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: var(--white);
+            padding: 3rem 2rem;
+            margin-top: 2rem;
+        }
+
+        .stats-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Featured Boats Section */
+        .featured-section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+        }
+
+        .section-title span {
+            color: var(--accent-gold);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .filter-tab {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-md);
+            background: transparent;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        /* Boat Cards Grid */
+        .boats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .boat-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .boat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .boat-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .boat-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .boat-card:hover .boat-image img {
+            transform: scale(1.1);
+        }
+
+        .boat-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .boat-favorite {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .boat-favorite:hover {
+            transform: scale(1.1);
+            background: #ff6b6b;
+            color: var(--white);
+        }
+
+        .boat-content {
+            padding: 1.5rem;
+        }
+
+        .boat-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .boat-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .boat-specs {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+
+        .spec {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .boat-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .boat-price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .boat-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #666;
+        }
+
+        .boat-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--accent-gold);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: linear-gradient(135deg, var(--primary-blue), #2a5a8c);
+            padding: 6rem 2rem;
+            color: var(--white);
+        }
+
+        .how-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .how-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Owner CTA */
+        .owner-cta {
+            padding: 6rem 2rem;
+            background: var(--sand);
+        }
+
+        .owner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .owner-image {
+            position: relative;
+        }
+
+        .owner-image img {
+            width: 100%;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .earning-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .earning-badge .amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .earning-badge .label {
+            font-size: 0.85rem;
+        }
+
+        .owner-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .owner-text p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            font-size: 1rem;
+        }
+
+        .benefits-list .check {
+            width: 24px;
+            height: 24px;
+            background: var(--ocean-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 6rem 2rem;
+            background: var(--white);
+        }
+
+        .testimonials-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonials-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--sand);
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 3rem;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--ocean-medium));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .testimonial-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .testimonial-info span {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            opacity: 0.7;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-links h4 {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlide 0.4s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--sand);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #ff6b6b;
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--ocean-medium);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* AI Assistant Bubble */
+        .ai-assistant {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1500;
+        }
+
+        .ai-bubble {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent-gold), #d4af37);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(201, 162, 39, 0.4);
+            transition: all 0.3s ease;
+            font-size: 1.8rem;
+        }
+
+        .ai-bubble:hover {
+            transform: scale(1.1);
+        }
+
+        .ai-chat {
+            display: none;
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 380px;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-strong);
+            overflow: hidden;
+        }
+
+        .ai-chat.active {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, var(--primary-blue), #2a5a8c);
+            color: var(--white);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ai-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .ai-chat-header h4 {
+            font-size: 1.1rem;
+        }
+
+        .ai-chat-header span {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .ai-chat-body {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .ai-message {
+            margin-bottom: 1rem;
+            max-width: 85%;
+        }
+
+        .ai-message.bot {
+            background: var(--sand);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border-bottom-left-radius: 4px;
+        }
+
+        .ai-message.user {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border-bottom-right-radius: 4px;
+            margin-left: auto;
+        }
+
+        .ai-chat-footer {
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .ai-chat-footer input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+        }
+
+        .ai-chat-footer button {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .boats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .owner-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .search-row {
+                grid-template-columns: 1fr;
+            }
+
+            .boats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ocean-bg">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">⛵</div>
+                <div class="logo-text">
+                    Nautic Aventures
+                    <span>Bonifacio</span>
+                </div>
+            </div>
+            <nav>
+                <a href="#boats">Nos Bateaux</a>
+                <a href="#how">Comment ça marche</a>
+                <a href="#owner">Propriétaires</a>
+                <a href="#services">Services</a>
+                <a class="btn btn-secondary" onclick="openModal('login')">Connexion</a>
+                <a class="btn btn-primary" onclick="openModal('register')">S'inscrire</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    Naviguez vers l'aventure
+                    <span>en Corse du Sud</span>
+                </h1>
+                <p>Louez un bateau entre particuliers à Bonifacio. Une expérience unique avec l'accompagnement d'experts passionnés par la mer.</p>
+                
+                <div class="search-box">
+                    <div class="search-row">
+                        <div class="search-field">
+                            <label>📍 Destination</label>
+                            <select>
+                                <option>Bonifacio</option>
+                                <option>Îles Lavezzi</option>
+                                <option>Porto-Vecchio</option>
+                                <option>Santa Manza</option>
+                            </select>
+                        </div>
+                        <div class="search-field">
+                            <label>📅 Date de départ</label>
+                            <input type="date" value="2026-07-15">
+                        </div>
+                        <div class="search-field">
+                            <label>📅 Date de retour</label>
+                            <input type="date" value="2026-07-18">
+                        </div>
+                        <button class="btn btn-primary search-btn">Rechercher</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center; color: #666; font-size: 0.9rem;">
+                    <span>🛡️ Assurance incluse</span>
+                    <span>✓ Annulation flexible</span>
+                    <span>🤖 Assistance IA 24/7</span>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="boat-cards">
+                    <div class="boat-card-mini">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop" alt="Voilier">
+                        <div class="boat-card-mini-content">
+                            <h4>Jeanneau Sun Odyssey</h4>
+                            <div class="mini-rating">⭐ 4.9 (47)</div>
+                            <div class="price">280€/jour</div>
+                        </div>
+                    </div>
+                    <div class="boat-card-mini">
+                        <img src="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=300&h=200&fit=crop" alt="Catamaran">
+                        <div class="boat-card-mini-content">
+                            <h4>Lagoon 42</h4>
+                            <div class="mini-rating">⭐ 5.0 (28)</div>
+                            <div class="price">450€/jour</div>
+                        </div>
+                    </div>
+                    <div class="boat-card-mini">
+                        <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=300&h=200&fit=crop" alt="Semi-rigide">
+                        <div class="boat-card-mini-content">
+                            <h4>Zodiac Medline</h4>
+                            <div class="mini-rating">⭐ 4.8 (63)</div>
+                            <div class="price">180€/jour</div>
+                        </div>
+                    </div>
+                    <div class="boat-card-mini">
+                        <img src="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=300&h=200&fit=crop" alt="Yacht">
+                        <div class="boat-card-mini-content">
+                            <h4>Bénéteau Gran Turismo</h4>
+                            <div class="mini-rating">⭐ 4.9 (31)</div>
+                            <div class="price">520€/jour</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-banner">
+        <div class="stats-content">
+            <div class="stat-item">
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Bateaux disponibles</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">2,500+</div>
+                <div class="stat-label">Locations réussies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Clients satisfaits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Assistance IA</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-section" id="boats">
+        <div class="section-header">
+            <h2 class="section-title">Bateaux <span>à la une</span></h2>
+            <div class="filter-tabs">
+                <button class="filter-tab active">Tous</button>
+                <button class="filter-tab">Voiliers</button>
+                <button class="filter-tab">Catamarans</button>
+                <button class="filter-tab">Semi-rigides</button>
+                <button class="filter-tab">Yachts</button>
+            </div>
+        </div>
+
+        <div class="boats-grid">
+            <div class="boat-card" onclick="openModal('booking')">
+                <div class="boat-image">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop" alt="Voilier Jeanneau">
+                    <span class="boat-badge">⚡ Réservation instantanée</span>
+                    <div class="boat-favorite">♡</div>
+                </div>
+                <div class="boat-content">
+                    <div class="boat-location">📍 Bonifacio Port</div>
+                    <h3 class="boat-title">Jeanneau Sun Odyssey 440</h3>
+                    <div class="boat-specs">
+                        <span class="spec">👥 8 pers.</span>
+                        <span class="spec">📏 13.4m</span>
+                        <span class="spec">🛏️ 4 cabines</span>
+                        <span class="spec">⚓ 2019</span>
+                    </div>
+                    <div class="boat-footer">
+                        <div class="boat-price">280€ <span>/jour</span></div>
+                        <div class="boat-rating">⭐ 4.9 (47 avis)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boat-card" onclick="openModal('booking')">
+                <div class="boat-image">
+                    <img src="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=600&h=400&fit=crop" alt="Catamaran Lagoon">
+                    <span class="boat-badge" style="background: #4CAF50; color: white;">🌿 Éco-responsable</span>
+                    <div class="boat-favorite">♡</div>
+                </div>
+                <div class="boat-content">
+                    <div class="boat-location">📍 Marina di Bonifacio</div>
+                    <h3 class="boat-title">Lagoon 42 - Catamaran</h3>
+                    <div class="boat-specs">
+                        <span class="spec">👥 12 pers.</span>
+                        <span class="spec">📏 12.8m</span>
+                        <span class="spec">🛏️ 6 cabines</span>
+                        <span class="spec">⚓ 2021</span>
+                    </div>
+                    <div class="boat-footer">
+                        <div class="boat-price">450€ <span>/jour</span></div>
+                        <div class="boat-rating">⭐ 5.0 (28 avis)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boat-card" onclick="openModal('booking')">
+                <div class="boat-image">
+                    <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=600&h=400&fit=crop" alt="Semi-rigide">
+                    <span class="boat-badge">🔥 Populaire</span>
+                    <div class="boat-favorite">♡</div>
+                </div>
+                <div class="boat-content">
+                    <div class="boat-location">📍 Sperone Beach</div>
+                    <h3 class="boat-title">Zodiac Medline 7.5</h3>
+                    <div class="boat-specs">
+                        <span class="spec">👥 10 pers.</span>
+                        <span class="spec">📏 7.5m</span>
+                        <span class="spec">🚀 300cv</span>
+                        <span class="spec">⚓ 2022</span>
+                    </div>
+                    <div class="boat-footer">
+                        <div class="boat-price">180€ <span>/jour</span></div>
+                        <div class="boat-rating">⭐ 4.8 (63 avis)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boat-card" onclick="openModal('booking')">
+                <div class="boat-image">
+                    <img src="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=600&h=400&fit=crop" alt="Yacht">
+                    <span class="boat-badge" style="background: #9c27b0; color: white;">✨ Premium</span>
+                    <div class="boat-favorite">♡</div>
+                </div>
+                <div class="boat-content">
+                    <div class="boat-location">📍 Port Charles Ornano</div>
+                    <h3 class="boat-title">Bénéteau Gran Turismo 45</h3>
+                    <div class="boat-specs">
+                        <span class="spec">👥 10 pers.</span>
+                        <span class="spec">📏 14.2m</span>
+                        <span class="spec">🛏️ 3 cabines</span>
+                        <span class="spec">⚓ 2023</span>
+                    </div>
+                    <div class="boat-footer">
+                        <div class="boat-price">520€ <span>/jour</span></div>
+                        <div class="boat-rating">⭐ 4.9 (31 avis)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boat-card" onclick="openModal('booking')">
+                <div class="boat-image">
+                    <img src="https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=600&h=400&fit=crop" alt="Voilier">
+                    <span class="boat-badge">🎓 Idéal débutants</span>
+                    <div class="boat-favorite">♡</div>
+                </div>
+                <div class="boat-content">
+                    <div class="boat-location">📍 Santa Manza Bay</div>
+                    <h3 class="boat-title">Dufour 360 Grand Large</h3>
+                    <div class="boat-specs">
+                        <span class="spec">👥 6 pers.</span>
+                        <span class="spec">📏 10.3m</span>
+                        <span class="spec">🛏️ 3 cabines</span>
+                        <span class="spec">⚓ 2020</span>
+                    </div>
+                    <div class="boat-footer">
+                        <div class="boat-price">220€ <span>/jour</span></div>
+                        <div class="boat-rating">⭐ 4.7 (52 avis)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="boat-card" onclick="openModal('booking')">
+                <div class="boat-image">
+                    <img src="https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?w=600&h=400&fit=crop" alt="Bateau pêche">
+                    <span class="boat-badge">🎣 Équipé pêche</span>
+                    <div class="boat-favorite">♡</div>
+                </div>
+                <div class="boat-content">
+                    <div class="boat-location">📍 Tonnara</div>
+                    <h3 class="boat-title">Cap Camarat 7.5 DC</h3>
+                    <div class="boat-specs">
+                        <span class="spec">👥 7 pers.</span>
+                        <span class="spec">📏 7.5m</span>
+                        <span class="spec">🚀 250cv</span>
+                        <span class="spec">⚓ 2021</span>
+                    </div>
+                    <div class="boat-footer">
+                        <div class="boat-price">195€ <span>/jour</span></div>
+                        <div class="boat-rating">⭐ 4.8 (38 avis)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how">
+        <div class="how-content">
+            <h2 class="how-title">Comment ça marche ?</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Trouvez votre bateau</h3>
+                    <p>Parcourez notre sélection de bateaux et utilisez notre IA pour trouver le bateau parfait selon vos critères.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Réservez en ligne</h3>
+                    <p>Réservation sécurisée avec paiement en ligne. Confirmation instantanée et assurance incluse.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Briefing personnalisé</h3>
+                    <p>Rencontrez le propriétaire, recevez un briefing sur le bateau et les meilleurs spots de la région.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Naviguez sereinement</h3>
+                    <p>Profitez de votre sortie avec notre assistance IA 24/7 et notre équipe de maintenance à Bonifacio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="owner-cta" id="owner">
+        <div class="owner-content">
+            <div class="owner-image">
+                <img src="https://images.unsplash.com/photo-1535089894977-83d4c8854f62?w=600&h=500&fit=crop" alt="Propriétaire bateau">
+                <div class="earning-badge">
+                    <span class="amount">+8 500€</span>
+                    <span class="label">Revenu moyen / saison</span>
+                </div>
+            </div>
+            <div class="owner-text">
+                <h2>Propriétaires, rentabilisez votre bateau</h2>
+                <p>Rejoignez notre communauté de propriétaires et générez des revenus passifs tout en bénéficiant de notre expertise en maintenance et gestion locative.</p>
+                <ul class="benefits-list">
+                    <li><span class="check">✓</span> Commission de 50% seulement (tout inclus)</li>
+                    <li><span class="check">✓</span> Gestion complète : assurance, contrats, paiements</li>
+                    <li><span class="check">✓</span> Maintenance et entretien par notre atelier certifié</li>
+                    <li><span class="check">✓</span> Planning flexible autour de votre usage personnel</li>
+                    <li><span class="check">✓</span> IA pour optimiser vos tarifs et disponibilités</li>
+                </ul>
+                <button class="btn btn-gold" onclick="openModal('owner')">Devenir propriétaire partenaire</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="testimonials-content">
+            <h2 class="testimonials-title">Ce que disent nos clients</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">Une expérience incroyable ! Le bateau était impeccable et l'assistant IA nous a recommandé des criques magnifiques aux Lavezzi. On reviendra !</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">ML</div>
+                        <div class="testimonial-info">
+                            <h4>Marie Laurent</h4>
+                            <span>⭐⭐⭐⭐⭐ • Août 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">Propriétaire depuis 2 ans, je suis ravi. Mon bateau est entretenu parfaitement et je génère un excellent revenu sans me soucier de rien.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">PD</div>
+                        <div class="testimonial-info">
+                            <h4>Pierre Dubois</h4>
+                            <span>⭐⭐⭐⭐⭐ • Propriétaire</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">Le chatbot IA m'a aidé à choisir le bateau idéal pour notre groupe de 10. La réservation était simple et l'équipe très réactive.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">AC</div>
+                        <div class="testimonial-info">
+                            <h4>Antoine Corsini</h4>
+                            <span>⭐⭐⭐⭐⭐ • Juillet 2025</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <h3>⛵ Nautic Aventures Bonifacio</h3>
+                    <p>Votre partenaire pour la location de bateaux entre particuliers en Corse du Sud. Depuis 2010, nous accompagnons les passionnés de mer avec expertise et passion.</p>
+                    <p style="margin-top: 1rem;">📍 Port de Bonifacio, Corse<br>📞 +33 4 95 73 XX XX<br>✉️ contact@nautic-aventures.fr</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Location</h4>
+                    <ul>
+                        <li><a href="#">Tous les bateaux</a></li>
+                        <li><a href="#">Voiliers</a></li>
+                        <li><a href="#">Catamarans</a></li>
+                        <li><a href="#">Semi-rigides</a></li>
+                        <li><a href="#">Yachts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Propriétaires</h4>
+                    <ul>
+                        <li><a href="#">Devenir partenaire</a></li>
+                        <li><a href="#">Gestion locative</a></li>
+                        <li><a href="#">Atelier réparation</a></li>
+                        <li><a href="#">FAQ propriétaires</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>À propos</h4>
+                    <ul>
+                        <li><a href="#">Notre histoire</a></li>
+                        <li><a href="#">L'équipe</a></li>
+                        <li><a href="#">Conditions générales</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Nautic Aventures Bonifacio. Tous droits réservés.</p>
+                <p>Prototype IA - Plateforme de démonstration</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Connexion</h2>
+                <button class="modal-close" onclick="closeModal('login')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" placeholder="••••••••">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;">Se connecter</button>
+                <p style="text-align: center; margin-top: 1rem; color: #666;">
+                    Pas encore de compte ? <a href="#" onclick="openModal('register'); closeModal('login');" style="color: var(--primary-blue);">S'inscrire</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal-overlay" id="registerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Créer un compte</h2>
+                <button class="modal-close" onclick="closeModal('register')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <input type="text" placeholder="Jean">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <input type="text" placeholder="Dupont">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="tel" placeholder="+33 6 XX XX XX XX">
+                </div>
+                <div class="form-group">
+                    <label>Mot de passe</label>
+                    <input type="password" placeholder="Min. 8 caractères">
+                </div>
+                <div class="form-group">
+                    <label>Je suis...</label>
+                    <select>
+                        <option>Un particulier cherchant à louer</option>
+                        <option>Un propriétaire de bateau</option>
+                        <option>Les deux</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;">Créer mon compte</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Réserver ce bateau</h2>
+                <button class="modal-close" onclick="closeModal('booking')">×</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: var(--sand); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+                    <strong>Jeanneau Sun Odyssey 440</strong><br>
+                    <span style="color: #666;">📍 Bonifacio Port • 280€/jour</span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date de départ</label>
+                        <input type="date" value="2026-07-15">
+                    </div>
+                    <div class="form-group">
+                        <label>Date de retour</label>
+                        <input type="date" value="2026-07-18">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nombre de passagers</label>
+                    <select>
+                        <option>2 personnes</option>
+                        <option>4 personnes</option>
+                        <option>6 personnes</option>
+                        <option>8 personnes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Options</label>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox"> Skipper (+150€/jour)
+                        </label>
+                        <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox"> Équipement snorkeling (+25€)
+                        </label>
+                        <label style="font-weight: normal; display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox"> Pack pêche (+50€)
+                        </label>
+                    </div>
+                </div>
+                <div style="background: var(--ocean-light); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>3 jours × 280€</span>
+                        <strong>840€</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: #666; font-size: 0.9rem;">
+                        <span>Frais de service</span>
+                        <span>42€</span>
+                    </div>
+                    <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid #ccc;">
+                    <div style="display: flex; justify-content: space-between; font-size: 1.2rem;">
+                        <strong>Total</strong>
+                        <strong style="color: var(--primary-blue);">882€</strong>
+                    </div>
+                </div>
+                <button class="btn btn-primary" style="width: 100%;">Confirmer la réservation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Owner Modal -->
+    <div class="modal-overlay" id="ownerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Devenir propriétaire partenaire</h2>
+                <button class="modal-close" onclick="closeModal('owner')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Type de bateau</label>
+                    <select>
+                        <option>Voilier</option>
+                        <option>Catamaran</option>
+                        <option>Semi-rigide</option>
+                        <option>Yacht à moteur</option>
+                        <option>Autre</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Marque</label>
+                        <input type="text" placeholder="ex: Jeanneau">
+                    </div>
+                    <div class="form-group">
+                        <label>Modèle</label>
+                        <input type="text" placeholder="ex: Sun Odyssey 440">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Année</label>
+                        <input type="number" placeholder="2020">
+                    </div>
+                    <div class="form-group">
+                        <label>Longueur (m)</label>
+                        <input type="number" placeholder="12">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Port d'attache actuel</label>
+                    <input type="text" placeholder="ex: Port de Bonifacio">
+                </div>
+                <div class="form-group">
+                    <label>Votre email</label>
+                    <input type="email" placeholder="votre@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Message (optionnel)</label>
+                    <textarea rows="3" placeholder="Décrivez votre bateau et vos attentes..."></textarea>
+                </div>
+                <button class="btn btn-gold" style="width: 100%;">Envoyer ma demande</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Assistant -->
+    <div class="ai-assistant">
+        <div class="ai-chat" id="aiChat">
+            <div class="ai-chat-header">
+                <div class="ai-avatar">🤖</div>
+                <div>
+                    <h4>Assistant Nautic IA</h4>
+                    <span>Toujours là pour vous aider</span>
+                </div>
+            </div>
+            <div class="ai-chat-body" id="chatBody">
+                <div class="ai-message bot">
+                    Bonjour ! 👋 Je suis l'assistant IA de Nautic Aventures. Je peux vous aider à :
+                    <br><br>
+                    🚤 Trouver le bateau idéal<br>
+                    📍 Recommander des itinéraires<br>
+                    ⚓ Répondre à vos questions<br>
+                    🔧 Assistance technique
+                    <br><br>
+                    Comment puis-je vous aider ?
+                </div>
+            </div>
+            <div class="ai-chat-footer">
+                <input type="text" id="chatInput" placeholder="Écrivez votre message..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">Envoyer</button>
+            </div>
+        </div>
+        <div class="ai-bubble" onclick="toggleChat()">🤖</div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            document.getElementById(type + 'Modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+
+        // AI Chat
+        function toggleChat() {
+            document.getElementById('aiChat').classList.toggle('active');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatBody = document.getElementById('chatBody');
+            
+            // Add user message
+            chatBody.innerHTML += `<div class="ai-message user">${message}</div>`;
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                let response = getAIResponse(message);
+                chatBody.innerHTML += `<div class="ai-message bot">${response}</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function getAIResponse(message) {
+            const lowerMsg = message.toLowerCase();
+            
+            if (lowerMsg.includes('lavezzi') || lowerMsg.includes('îles')) {
+                return "Les îles Lavezzi sont un incontournable ! 🏝️ Je vous recommande de partir tôt le matin (8h) pour éviter la foule. Prévoyez environ 45 min de navigation depuis Bonifacio. Pour ce trajet, un semi-rigide comme le Zodiac Medline serait parfait - rapide et maniable.";
+            }
+            if (lowerMsg.includes('débutant') || lowerMsg.includes('permis')) {
+                return "Pas de souci ! 🎓 Plusieurs options s'offrent à vous :<br><br>• Location avec skipper (à partir de +150€/jour)<br>• Bateaux sans permis (moteurs < 6cv)<br>• Formation express disponible sur place<br><br>Voulez-vous que je vous montre les bateaux adaptés aux débutants ?";
+            }
+            if (lowerMsg.includes('prix') || lowerMsg.includes('tarif') || lowerMsg.includes('coût')) {
+                return "Nos tarifs varient selon le type de bateau 💰 :<br><br>• Semi-rigides : 150-250€/jour<br>• Voiliers : 200-350€/jour<br>• Catamarans : 400-600€/jour<br>• Yachts premium : 500-800€/jour<br><br>L'assurance est incluse ! Des réductions sont possibles pour les locations de 5+ jours.";
+            }
+            if (lowerMsg.includes('météo') || lowerMsg.includes('temps')) {
+                return "Je vérifie toujours les conditions météo avant chaque sortie ! ⛅ En été à Bonifacio, attendez-vous à :<br><br>• Vent modéré (10-20 nœuds)<br>• Mer généralement calme le matin<br>• Vigilance sur le vent d'ouest l'après-midi<br><br>Notre équipe vous conseillera le jour J !";
+            }
+            if (lowerMsg.includes('propriétaire') || lowerMsg.includes('louer mon bateau')) {
+                return "Devenir propriétaire partenaire, excellente idée ! 🚤<br><br>Nous prenons en charge :<br>✓ Marketing et réservations<br>✓ Assurance et contrats<br>✓ Maintenance par notre atelier<br><br>Commission : 50% (tout inclus)<br>Revenus moyens : 8 500€/saison<br><br>Voulez-vous remplir une demande de partenariat ?";
+            }
+            
+            return "Merci pour votre message ! 😊 Je suis là pour vous aider à organiser votre sortie en mer. N'hésitez pas à me poser des questions sur nos bateaux, les itinéraires recommandés, ou notre service de gestion pour propriétaires.";
+        }
+
+        // Filter tabs interaction
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Favorite hearts
+        document.querySelectorAll('.boat-favorite').forEach(fav => {
+            fav.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.innerHTML = this.innerHTML === '♡' ? '♥' : '♡';
+                this.style.background = this.innerHTML === '♥' ? '#ff6b6b' : 'var(--white)';
+                this.style.color = this.innerHTML === '♥' ? 'var(--white)' : 'inherit';
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.padding = '0.75rem 2rem';
+                header.style.boxShadow = '0 4px 30px rgba(26, 75, 124, 0.15)';
+            } else {
+                header.style.padding = '1rem 2rem';
+                header.style.boxShadow = '0 4px 20px rgba(26, 75, 124, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
